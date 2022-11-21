@@ -11,22 +11,23 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Capped.sol";
 
 
 
-contract MyToken is SafeERC20, ERC20, ERC20Detailed, ERC20Burnable, ERC20Mintable, ERC20Capped {
-    constructor() ERC20Detailed("Josa", "JOS", 18) ERC20Capped(144000);
+contract MyToken is SafeERC20,  ERC20, ERC20Detailed, ERC20Burnable, ERC20Mintable, ERC20Capped {
+   
+    address public admin;
 
-    function burn()  returns () {
-        
+    constructor() ERC20Detailed("Josa", "JOS", 18) ERC20Capped(144000000) 
+    {
+        _mint(msg.sender, 144000000 * 10 ** 18);
     }
 
-    function mint(address , uint256 )  returns () {
-        
+    function burn(uint256 amount) external returns () 
+    {
+        _burn(msg.sender, amount);
     }
 
-    function addMinter(address )  returns () {
-        
-    }
-
-    function name()  returns () {
-        
+    function mint(address to, uint256 amount ) external returns () 
+    {
+        require(msg.sender == admin, 'Only admin');
+        _mint(to, amount);   
     }
 }
